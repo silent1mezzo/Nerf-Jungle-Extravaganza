@@ -1,44 +1,52 @@
+function Gun(ammo, reload_time) {
+    this.max_ammo = ammo;
+    this.ammo = ammo;
+    this.reload_time = reload_time;
+}
+
+Gun.prototype.reload = function() {
+    console.log('Reloading');
+    this.ammo = this.max_ammo;
+}
+
+Gun.prototype.fire = function() {
+    if(this.ammo > 0) {
+        this.ammo--;
+        if(this.ammo === 0) {
+            setTimeout(this.reload, 500);
+        }
+    }
+}
+
 // load the AMD modules we need
 require([
     'frozen/GameCore',
+    'frozen/ResourceManager',
     'dojo/keys'
-], function(GameCore, keys){
+], function(GameCore, ResourceManager, keys){
 
-    'use strict';
-
-    var x = 100;
-    var y = 100;
-    var speed = 4;
-
+    var rm = new ResourceManager();
+    var bg = rm.loadImage('images/jungle-bg.jpg');
+    var gun = new Gun(10, 100)
     var game = new GameCore({
         canvasId: 'game',
-
+        resourceManager: rm,
         initInput: function(input){
-            input.addKeyAction(keys.UP_ARROW);
-            input.addKeyAction(keys.RIGHT_ARROW);
-            input.addKeyAction(keys.DOWN_ARROW);
-            input.addKeyAction(keys.LEFT_ARROW);
+
         },
         handleInput: function(input){
-            if(input.keyActions[keys.LEFT_ARROW].isPressed()){
-                x-= speed;
-            }
-            if(input.keyActions[keys.RIGHT_ARROW].isPressed()){
-                x+= speed;
-            }
-            if(input.keyActions[keys.UP_ARROW].isPressed()){
-                y-= speed;
-            }
-            if(input.keyActions[keys.DOWN_ARROW].isPressed()){
-                y+= speed;
+            if(input.mouseAction.isPressed()){
+                console.log('Click Click');
+                gun.fire();
+                console.log(gun.ammo);
+                //console.log(input.mouseAction.startPosition);
             }
         },
         update: function(millis){
 
         },
         draw: function(context){
-            context.clearRect(0, 0, this.width, this.height);
-            context.fillRect(x, y, 25, 50);
+            context.drawImage(bg, 0, 0, this.width, this.height);
         }
     });
 

@@ -1,4 +1,4 @@
-Blocky-STD-Derby
+Nerf Jungle Extravaganza
 ================
 
-G Adventure's Week 1 Game Challenge
+G Adventure's Week 2 Game Challenge

@@ -1,22 +1,34 @@
-function Gun(ammo, reload_time) {
-    this.max_ammo = ammo;
-    this.ammo = ammo;
-    this.reload_time = reload_time;
-}
+var can_fire = true;
 
-Gun.prototype.reload = function() {
-    console.log('Reloading');
-    this.ammo = this.max_ammo;
-}
+var Gun = (function() {
+    // constructor
+    function Gun(ammo, reload_time){
+        this._max_ammo = ammo;
+        this._ammo = ammo;
+        this.reload_time = reload_time;
 
-Gun.prototype.fire = function() {
-    if(this.ammo > 0) {
-        this.ammo--;
-        if(this.ammo === 0) {
-            setTimeout(this.reload, 500);
-        }
     }
-}
+
+    Gun.prototype.reload = function(gun) {
+        gun._ammo = gun._max_ammo;
+    };
+
+    Gun.prototype.fire = function() {
+        var self = this;
+        if(this._ammo > 0 && can_fire) {
+            console.log('Firing');
+            console.log(this._ammo);
+            this._ammo--;
+            if(this._ammo === 0) {
+                console.log('Reloading');
+                setTimeout(function() { self.reload(self); }, 750);
+            }
+        }
+    };
+
+    return Gun;
+})();
+
 
 // load the AMD modules we need
 require([
@@ -34,13 +46,17 @@ require([
         initInput: function(input){
 
         },
-        handleInput: function(input){
+        handleInput: function(input){   
             if(input.mouseAction.isPressed()){
-                console.log('Click Click');
                 gun.fire();
-                console.log(gun.ammo);
+                can_fire = false;
                 //console.log(input.mouseAction.startPosition);
             }
+
+            if(!input.mouseAction.isPressed()){
+                can_fire = true;
+            }
+
         },
         update: function(millis){
 

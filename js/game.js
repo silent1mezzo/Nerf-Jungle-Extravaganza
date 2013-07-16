@@ -11,6 +11,10 @@ var Gun = (function() {
 
     }
 
+    Gun.prototype.ammo_count = function(){
+        return this._ammo;
+    };
+
     Gun.prototype.reload = function(gun) {
         gun._ammo = gun._max_ammo;
     };
@@ -74,6 +78,8 @@ require([
     var rm = new ResourceManager();
     var bg = rm.loadImage('images/jungle-bg.jpg');
     var raptor_img = rm.loadImage('images/raptor.png');
+    var nerf_img = rm.loadImage('images/nerf.png'); 
+
     var gun = new Gun(10, 100);
     var raptors = [];
     for(var i=0; i<10; i++) {
@@ -106,10 +112,15 @@ require([
         },
         draw: function(context){
             context.drawImage(bg, 0, 0, this.width, this.height);
+
             for(var i=0; i<raptors.length; i++) {
                 //console.log(raptors[i].get_x());
                 //console.log(raptors[i].get_y());
                 context.drawImage(raptor_img, raptors[i].get_x(), raptors[i].get_y(), 100, 100);
+            }
+
+            for(var i=0; i<gun.ammo_count(); i++){
+                context.drawImage(nerf_img, i*10 + 650, 10, 8, 40);
             }
         }
     });

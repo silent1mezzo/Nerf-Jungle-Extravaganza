@@ -29,7 +29,7 @@ var Gun = (function() {
             this._ammo--;
             if(this._ammo === 0) {
                 console.log('Reloading');
-                setTimeout(function() { self.reload(self); }, 750);
+                setTimeout(function() { self.reload(self); }, 500);
             }
         }
     };

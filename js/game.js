@@ -1,6 +1,8 @@
 var can_fire = true;
 var MAX_X = 768;
 var MAX_Y = 640;
+var LEVEL = 10;
+
 
 var Gun = (function() {
     // constructor
@@ -104,13 +106,10 @@ require([
     var rm = new ResourceManager();
     var bg = rm.loadImage('images/jungle-bg.jpg');
     var raptor_img = rm.loadImage('images/raptor.png');
-    var nerf_img = rm.loadImage('images/nerf.png'); 
+    var nerf_img = rm.loadImage('images/nerf.png');
 
     var gun = new Gun(10, 100);
     var raptors = [];
-    for(var i=0; i<10; i++) {
-        raptors[i] = new Raptor(10);
-    }
 
     var game = new GameCore({
         canvasId: 'game',
@@ -132,6 +131,13 @@ require([
 
         },
         update: function(millis){
+            if(raptors.length == 0) {
+                LEVEL++;
+                var speed = Math.min(10*(LEVEL/2), 35);
+                for(var i=0; i<(LEVEL/2)*10+5; i++) {
+                    raptors[i] = new Raptor(speed);
+                }
+            }
             for(var i=0; i<raptors.length; i++) {
                 raptors[i].move();
             }

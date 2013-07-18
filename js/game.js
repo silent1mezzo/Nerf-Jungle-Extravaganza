@@ -41,6 +41,13 @@ var Raptor = (function() {
         this._speed = speed;
         this._x = Math.floor(Math.random()*MAX_X+1);
         this._y = Math.floor(Math.random()*MAX_Y+1);
+
+        this._goal_x = Math.floor(Math.random()*MAX_X+1);
+        this._goal_y = Math.floor(Math.random()*MAX_Y+1);
+
+        // Movement Counters
+        this._can_move = true;
+        this._until_move = 0;
     }
 
     Raptor.prototype.get_x = function() {
@@ -52,13 +59,32 @@ var Raptor = (function() {
     }
 
     Raptor.prototype.move = function(raptor) {
-        var rand = Math.random();
-        if (rand < 0.5) {
-            this._x = this._x + this._speed;
-            this._y = this._y + this._speed;
+        if(this._can_move || this._until_move == 2){
+            if(this._x == this._goal_x && this._y == this._goal_y) {
+                this._goal_x = Math.floor(Math.random()*MAX_X+1);
+                this._goal_y = Math.floor(Math.random()*MAX_Y+1);
+            }
+            if(((this._x < this._goal_x) && (this._x > this._goal_x - this._speed)) ||
+                ((this._x > this._goal_x) && (this._x < this._goal_x + this._speed))) {
+                this._x = this._goal_x;
+            } else if(this._x < this._goal_x) {
+                this._x = this._x + this._speed;
+            } else if(this._x > this._goal_x) {
+                this._x = this._x - this._speed;
+            }
+
+            if(((this._y < this._goal_y) && (this._y > this._goal_y - this._speed)) ||
+                ((this._y > this._goal_y) && (this._y < this._goal_y + this._speed))) {
+                this._y = this._goal_y;
+            } else if(this._y < this._goal_y) {
+                this._y = this._y + this._speed;
+            } else if(this._y > this._goal_y) {
+                this._y = this._y - this._speed;
+            }
+            this._can_move = false;
+            this._until_move = 0;
         } else {
-            this._x = this._x - this._speed;
-            this._y = this._y - this._speed;
+            this._until_move++;
         }
     };
 

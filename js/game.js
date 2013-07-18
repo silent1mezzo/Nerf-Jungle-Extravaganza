@@ -1,7 +1,7 @@
 var can_fire = true;
 var MAX_X = 768;
 var MAX_Y = 640;
-var LEVEL = 10;
+var LEVEL = 0;
 
 
 var Gun = (function() {

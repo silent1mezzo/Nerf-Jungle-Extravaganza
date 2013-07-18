@@ -9,7 +9,7 @@ var Gun = (function() {
     function Gun(ammo, reload_time){
         this._max_ammo = ammo;
         this._ammo = ammo;
-        this.reload_time = reload_time;
+        this._reload_time = reload_time;
 
     }
 
@@ -29,7 +29,7 @@ var Gun = (function() {
             this._ammo--;
             if(this._ammo === 0) {
                 console.log('Reloading');
-                setTimeout(function() { self.reload(self); }, 500);
+                setTimeout(function() { self.reload(self); }, this._reload_time);
             }
         }
     };
@@ -108,7 +108,7 @@ require([
     var raptor_img = rm.loadImage('images/raptor.png');
     var nerf_img = rm.loadImage('images/nerf.png');
 
-    var gun = new Gun(10, 100);
+    var gun = new Gun(10, 500);
     var raptors = [];
 
     var game = new GameCore({

@@ -8,11 +8,12 @@ var get_name = true;
 var show_screen_name = false;
 var Gun = (function() {
     // constructor
-    function Gun(ammo, reload_time){
+    function Gun(ammo, reload_time, pew_sound, gun_sound){
         this._max_ammo = ammo;
         this._ammo = ammo;
         this._reload_time = reload_time;
-
+        this._pew_sound = pew_sound;
+        this._gun_sound = gun_sound;
     }
 
     Gun.prototype.ammo_count = function(){
@@ -26,8 +27,11 @@ var Gun = (function() {
     Gun.prototype.fire = function() {
         var self = this;
         if(this._ammo > 0 && can_fire) {
-            console.log('Firing');
-            console.log(this._ammo);
+            if(Math.random() < 0.5)
+                this._pew_sound.play();
+            else
+                this._gun_sound.play();
+
             this._ammo--;
             if(this._ammo === 0) {
                 console.log('Reloading');
@@ -128,11 +132,13 @@ require([
     'frozen/GameCore',
     'frozen/ResourceManager',
     'dojo/keys',
-    //'frozen/plugins/loadSound!sounds/pew_sound',
-    //'frozen/plugins/loadSound!sounds/gun_sound',
-    //'frozen/plugins/loadSound!sounds/reload_sound',
-    //'frozen/plugins/loadSound!sounds/raptor2',
-], function(GameCore, Box, BoxGame, ResourceManager, keys/*, pew_sound, gun_sound, reload_sound, raptor2*/){
+    'frozen/plugins/loadSound!sounds/pew_sound',
+    'frozen/plugins/loadSound!sounds/gun_sound',
+    'frozen/plugins/loadSound!sounds/reload_sound',
+    'frozen/plugins/loadSound!sounds/raptor1_sound',
+    'frozen/plugins/loadSound!sounds/raptor2',
+    'frozen/plugins/loadSound!sounds/raptor_die',
+], function(GameCore, Box, BoxGame, ResourceManager, keys, pew_sound, gun_sound, reload_sound, raptor1_sound, raptor2, raptor_die){
 
     var rm = new ResourceManager();
     var bg = rm.loadImage('images/jungle-bg.jpg');
@@ -141,7 +147,7 @@ require([
     var nerf_img = rm.loadImage('images/nerf.png');
     var health_bar = rm.loadImage('images/health.jpg');
 
-    var gun = new Gun(10, 500);
+    var gun = new Gun(10, 500, pew_sound, gun_sound);
     var raptors = [];
 
     var game = new BoxGame({
@@ -156,7 +162,6 @@ require([
         },
         handleInput: function(input){
             if(input.mouseAction.isPressed()){
-                //pew_sound.play(0.5);
                 gun.fire();
                 can_fire = false;
                 for(var i=0; i<raptors.length; i++) {

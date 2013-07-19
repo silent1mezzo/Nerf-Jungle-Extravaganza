@@ -12,6 +12,12 @@ function dropTable() {
     });
 }
 
+function clearTable() {
+    db.transaction(function(tx) {
+        tx.executeSql("DELETE FROM scores");
+    });
+}
+
 function addScore(name, score) {
     db.transaction(function(tx) {
         tx.executeSql("INSERT INTO scores (name, score) VALUES (?, ?)", [name, score]);

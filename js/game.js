@@ -5,7 +5,7 @@ var LEVEL = 0;
 var HEALTH = 100;
 var KILL_COUNT = 0;
 var get_name = true;
-
+var show_screen_name = false;
 var Gun = (function() {
     // constructor
     function Gun(ammo, reload_time){
@@ -198,11 +198,12 @@ require([
                 context.fillStyle = "red";
                 context.fillText('You killed ' + KILL_COUNT + ' raptors', 210, 400);
 
-                if(get_name && KILL_COUNT > 0) {
+                if(show_screen_name && get_name && KILL_COUNT > 0) {
                     var name = prompt("You've got a highscore! Please enter your name", "Y No Name?");
                     addScore(name, KILL_COUNT);
                     get_name = false;
                 }
+                show_screen_name = true;
             } else {
                 context.drawImage(bg, 0, 0, this.width, this.height);
 

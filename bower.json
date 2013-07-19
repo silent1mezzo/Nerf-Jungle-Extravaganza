@@ -1,0 +1,12 @@
+{
+  "name": "nerf-jungle-extravaganza",
+  "version": "0.1.0",
+  "main": "src/game.js",
+  "dependencies": {
+    "frozen": "0.4.1",
+    "firefox-install": "~0.1.0"
+  },
+  "devDependencies": {
+    "util": "dojo/util#1.8.3"
+  }
+}
